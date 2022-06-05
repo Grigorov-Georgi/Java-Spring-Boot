@@ -1,37 +1,53 @@
 package bg.softuni.mobilelele.web;
 
 import bg.softuni.mobilelele.model.dto.UserLoginDTO;
+import bg.softuni.mobilelele.model.dto.UserRegisterDTO;
 import bg.softuni.mobilelele.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class UserLoginController {
+@RequestMapping("/users")
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
-    public UserLoginController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String login(){
         return "auth-login";
     }
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public String login(UserLoginDTO userLoginDTO){
         System.out.println("User is logged: " + userService.login(userLoginDTO));
 
         return "redirect:/";
     }
 
-    @GetMapping("/users/logout")
+    @GetMapping("/logout")
     public String logout(){
         userService.logout();
+        return "redirect:/";
+    }
+
+    @GetMapping("/register")
+    public String register(){
+        return  "auth-register";
+    }
+
+    @PostMapping("/register")
+    public String register(UserRegisterDTO userRegisterDTO){
+
+        userService.registerAndLogin(userRegisterDTO);
+
         return "redirect:/";
     }
 }

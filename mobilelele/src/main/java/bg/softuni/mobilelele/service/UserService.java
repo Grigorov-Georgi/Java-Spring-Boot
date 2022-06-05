@@ -1,12 +1,14 @@
 package bg.softuni.mobilelele.service;
 
 import bg.softuni.mobilelele.model.dto.UserLoginDTO;
+import bg.softuni.mobilelele.model.dto.UserRegisterDTO;
 import bg.softuni.mobilelele.model.entity.UserEntity;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.user.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,15 +16,17 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private final PasswordEncoder passwordEncoder;
     private Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final CurrentUser currentUser;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, CurrentUser currentUser) {
+    public UserService(UserRepository userRepository, CurrentUser currentUser, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.currentUser = currentUser;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -35,7 +39,10 @@ public class UserService {
             return  false;
         }
 
-        boolean success = userOpt.get().getPassword().equals(loginDTO.getPassword());
+        var rawPassword = loginDTO.getPassword();
+        var encodedPassword = userOpt.get().getPassword();
+
+        boolean success = passwordEncoder.matches(rawPassword, encodedPassword);
 
         if (success){
             login(userOpt.get());
@@ -52,6 +59,19 @@ public class UserService {
                 setLoggedIn(true);
         currentUser.
                 setName(userEntity.getFirstName() + " " + userEntity.getLastName());
+    }
+
+    public void registerAndLogin(UserRegisterDTO userRegisterDTO){
+        UserEntity newUser = new UserEntity();
+        newUser.setActive(true);
+        newUser.setEmail(userRegisterDTO.getEmail());
+        newUser.setFirstName(userRegisterDTO.getFirstName());
+        newUser.setLastName(userRegisterDTO.getLastName());
+        newUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+
+        userRepository.save(newUser);
+
+        login(newUser);
     }
 
     public void logout(){
