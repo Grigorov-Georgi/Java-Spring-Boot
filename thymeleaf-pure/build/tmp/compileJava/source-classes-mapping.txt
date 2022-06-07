@@ -1,0 +1,2 @@
+bg/softuni/thymeleaf/Test.java
+ bg.softuni.thymeleaf.Test
