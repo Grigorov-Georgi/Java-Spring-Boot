@@ -21,7 +21,7 @@ public class Test {
         System.out.println(sw.toString());
     }
 
-    private static TemplateEngine createEngine(){
+    private static TemplateEngine createEngine() {
         TemplateEngine engine = new TemplateEngine();
         engine.setTemplateResolver(new ClassLoaderTemplateResolver());
         return engine;
