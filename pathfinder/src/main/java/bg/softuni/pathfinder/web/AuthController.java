@@ -1,10 +1,13 @@
 package bg.softuni.pathfinder.web;
 
 import bg.softuni.pathfinder.model.dto.UserRegistrationDTO;
+import bg.softuni.pathfinder.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -13,10 +16,20 @@ import javax.validation.Valid;
 @Controller
 public class AuthController {
 
+    private AuthService authService;
+
+    @Autowired
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @ModelAttribute("userRegistrationDTO")
+    public UserRegistrationDTO initForm(){
+        return new UserRegistrationDTO();
+    }
+
     @GetMapping("/register")
-    public String register(Model model){
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO();
-        model.addAttribute("userRegistrationDTO", userRegistrationDTO);
+    public String register(){
         return "register";
     }
 
@@ -33,6 +46,7 @@ public class AuthController {
             return "redirect:/register";
         }
 
+        this.authService.register(userRegistrationDTO);
         return "redirect:/login";
     }
 

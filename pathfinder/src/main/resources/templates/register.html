@@ -16,6 +16,7 @@
     <div class="d-flex justify-content-center ">
         <div class="row g-3">
             <form
+                    class="registration-form"
                     th:action="@{/register}"
                     th:method="post"
                     th:object="${userRegistrationDTO}">
@@ -26,6 +27,7 @@
                     <div class="col-auto">
                         <input name="username"
                                th:field="*{username}"
+                               th:errorclass="is-invalid"
                                required minlength="5" maxlength="20"
                                type="text"
                                id="inputUsername"
@@ -47,6 +49,7 @@
                     <div class="col-auto">
                         <input name="fullname"
                                th:field="*{fullname}"
+                               th:errorclass="is-invalid"
                                required minlength="5" maxlength="20"
                                type="text"
                                id="inputFullName"
@@ -64,6 +67,7 @@
                     <div class="col-auto">
                         <input name="email"
                                th:field="*{email}"
+                               th:errorclass="is-invalid"
 								required
                                type="email"
                                id="inputEmail"
@@ -80,6 +84,7 @@
                     <div class="col-auto">
                         <input name="age"
                                th:field="*{age}"
+                               th:errorclass="is-invalid"
                                required
                                type="number"
                                id="inputAge"
@@ -97,6 +102,7 @@
                     <div class="col-auto">
                         <input name="password"
                                th:field="*{password}"
+                               th:errorclass="is-invalid"
                                 required minlength="5" maxlength="20"
                                type="password"
                                id="inputPassword"
