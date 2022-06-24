@@ -62,6 +62,7 @@ public class UserService {
                 setLoggedIn(true);
         currentUser.
                 setName(userEntity.getFirstName() + " " + userEntity.getLastName());
+        currentUser.setEmail(userEntity.getEmail());
     }
 
     public void registerAndLogin(UserRegisterDTO userRegisterDTO){
