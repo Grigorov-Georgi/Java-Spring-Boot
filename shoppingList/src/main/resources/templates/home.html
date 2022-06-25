@@ -41,7 +41,7 @@
                             Price:
                             <span th:text="${food.getPrice()}"/>
                             lv
-                            <a class="ml-3 text-danger" href="/">Buy</a>
+                            <a class="ml-3 text-danger" th:href="@{/home/buy(id=${food.getId()})}">Buy</a>
                         </div>
                     </li>
                 </ul>
@@ -58,7 +58,7 @@
                             Price:
                             <span th:text="${drink.getPrice()}"/>
                             lv
-                            <a class="ml-3 text-danger" href="/">Buy</a>
+                            <a class="ml-3 text-danger" th:href="@{/home/buy(id=${drink.getId()})}">Buy</a>
                         </div>
                     </li>
                 </ul>
@@ -76,7 +76,7 @@
                             Price:
                             <span th:text="${household.getPrice()}"/>
                             lv
-                            <a class="ml-3 text-danger" href="/">Buy</a>
+                            <a class="ml-3 text-danger" th:href="@{/home/buy(id=${household.getId()})}">Buy</a>
                         </div>
                     </li>
                 </ul>
@@ -92,13 +92,17 @@
                             Price:
                             <span th:text="${other.getPrice()}"/>
                             lv
-                            <a class="ml-3 text-danger" href="/">Buy</a>
+                            <a class="ml-3 text-danger" th:href="@{/home/buy(id=${other.getId()})}">Buy</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-        <a href="/" class="btn btn-danger">Buy all products for {totalPriceOfProducts} lv|</a>
+        <a href="/home/buy/all" class="btn btn-danger" >
+            Buy all products for
+            <span th:text="${@loggedUser.total}"/>
+             lv
+        </a>
     </div>
 </main>
 <footer class="footer bg-transparent  py-2">

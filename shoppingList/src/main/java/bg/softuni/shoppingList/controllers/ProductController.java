@@ -1,6 +1,7 @@
 package bg.softuni.shoppingList.controllers;
 
 import bg.softuni.shoppingList.models.dto.AddProductDTO;
+import bg.softuni.shoppingList.services.AuthService;
 import bg.softuni.shoppingList.services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,9 +15,11 @@ import javax.validation.Valid;
 @Controller
 public class ProductController {
     private ProductService productService;
+    private AuthService authService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, AuthService authService) {
         this.productService = productService;
+        this.authService = authService;
     }
 
     @ModelAttribute("addProductDTO")
@@ -26,6 +29,9 @@ public class ProductController {
 
     @GetMapping("/product/add")
     public String product(){
+        if (!authService.isLoggedIn()){
+            return "redirect:/";
+        }
         return "product-add";
     }
 
@@ -33,6 +39,10 @@ public class ProductController {
     public String product(@Valid AddProductDTO addProductDTO,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes){
+
+        if (!authService.isLoggedIn()){
+            return "redirect:/";
+        }
 
         if (bindingResult.hasErrors() || !this.productService.create(addProductDTO)){
             redirectAttributes.addFlashAttribute("addProductDTO", addProductDTO);

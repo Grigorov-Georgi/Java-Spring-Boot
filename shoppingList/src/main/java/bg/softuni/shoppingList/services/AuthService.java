@@ -56,4 +56,8 @@ public class AuthService {
         return true;
     }
 
+    public boolean isLoggedIn(){
+        return this.userSession.getId() > 0;
+    }
+
 }
